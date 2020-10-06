@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"log"
 	"strconv"
+	"time"
 )
 
 const (
@@ -53,8 +54,12 @@ func generateBody(templateEmailFileName, recipientName, ts string, alertId int) 
 		AlertId       string
 	}
 	data.RecipientName = template.HTML(recipientName)
-	data.EventTime = template.HTML(ts)
 	data.AlertId = strconv.Itoa(alertId)
+	ti, err := time.Parse(time.RFC3339Nano, ts)
+	if err != nil {
+		log.Fatalf("failed to parse time: %v", err)
+	}
+	data.EventTime = template.HTML(ti.Format(time.RFC850))
 
 	t, err := template.ParseFiles(templateEmailFileName)
 	if err != nil {
