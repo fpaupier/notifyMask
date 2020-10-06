@@ -34,6 +34,27 @@ func getAlertEventTime(id int) string {
 	return et
 }
 
+// fetchImage returns the image related to the alert id.
+func fetchImage(alertId int, fPath string) {
+	db, err := sql.Open("cloudsqlpostgres", dsn)
+	if err != nil {
+		log.Fatalf("failed to open DB: %v\n", err)
+	}
+	defer db.Close()
+	row, err := db.Query("SELECT data FROM image LEFT JOIN alert a on image.id = a.image_id WHERE a.id =  $1", alertId)
+	if err != nil {
+		log.Fatalf("failed to query image: %v\n", err)
+	}
+	var img []byte
+	for row.Next() {
+		if err = row.Scan(&img); err != nil {
+			log.Fatalf("failed to recover image from alert: %v\n", err)
+		}
+	}
+	_ = row.Close()
+	bytesToJpeg(img, fPath)
+}
+
 // checkAlert marks the alert with `id` as sent in the DB.
 func checkAlert(id int) {
 	db, err := sql.Open("cloudsqlpostgres", dsn)

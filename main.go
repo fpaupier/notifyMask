@@ -8,8 +8,10 @@ import (
 )
 
 const (
-	topic = "to-notify-topic"             // To consume from
-	admin = "dluumi0ke@relay.firefox.com" // Email address to which send the email - could be loaded from config or a DB
+	topic      = "to-notify-topic"             // To consume from
+	adminEmail = "dluumi0ke@relay.firefox.com" // Email address to which send the email - could be loaded from config or a DB
+	adminName  = "Camille"                     // Name of the admin
+	imgPath    = "./assets/img.jpeg"           // image responsible from the alert
 )
 
 func main() {
@@ -24,9 +26,10 @@ func main() {
 			alertId := getAlertId(e.Value)
 			// Retrieve the record
 			ts := getAlertEventTime(alertId)
+			fetchImage(alertId, imgPath)
 			// Prepare email for admin
 			// Send email to admin
-			sendEmail(admin, ts, alertId)
+			sendEmail(adminEmail, adminName, ts, alertId, imgPath)
 			// Update status of alert to sent
 			checkAlert(alertId)
 		case kafka.PartitionEOF:
