@@ -19,7 +19,7 @@ const (
 // sendEmail formats an email sent to recipientEmail to inform them that an alert is raised at time ts, indicating the id of the alert.
 func sendEmail(recipientEmail, recipientName, ts string, id int) {
 	mailjetClient := mailjet.NewMailjetClient(apiPublicKeyEmail, apiPrivateKeyEmail)
-	header := fmt.Sprintf("Missing mask - Alert #%d", id)
+	header := fmt.Sprintf("Someone's not wearing its mask - Alert #%d", id)
 	body := generateBody(templateFPath, recipientName, ts, id)
 	messagesInfo := []mailjet.InfoMessagesV31{
 		{
@@ -44,7 +44,7 @@ func sendEmail(recipientEmail, recipientName, ts string, id int) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Data: %+v\n", res)
+	log.Printf("mail sent for alert id #%d: %+v\n", id, res)
 }
 
 func generateBody(templateEmailFileName, recipientName, ts string, alertId int) string {
