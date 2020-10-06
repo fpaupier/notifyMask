@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	topic = "to-notify-topic"
-	admin = "dluumi0ke@relay.firefox.com"
+	topic = "to-notify-topic"             // To consume from
+	admin = "dluumi0ke@relay.firefox.com" // Email address to which send the email - could be loaded from config or a DB
 )
 
 func main() {
