@@ -16,10 +16,10 @@ const (
 )
 
 // sendEmail formats an email sent to recipientEmail to inform them that an alert is raised at time ts, indicating the id of the alert.
-func sendEmail(recipientEmail, recipientName, ts string, id int, imgPath string) {
+func sendEmail(recipientEmail, recipientName, ts string, id int) {
 	mailjetClient := mailjet.NewMailjetClient(apiPublicKeyEmail, apiPrivateKeyEmail)
-	header := fmt.Sprintf("Someone is not wearing their mask - alert #%d", id)
-	body := generateBody(templateFPath, recipientName, ts, id, imgPath)
+	header := fmt.Sprintf("Missing mask - Alert #%d", id)
+	body := generateBody(templateFPath, recipientName, ts, id)
 	messagesInfo := []mailjet.InfoMessagesV31{
 		{
 			From: &mailjet.RecipientV31{
@@ -46,17 +46,15 @@ func sendEmail(recipientEmail, recipientName, ts string, id int, imgPath string)
 	log.Printf("Data: %+v\n", res)
 }
 
-func generateBody(templateEmailFileName, recipientName, ts string, alertId int, imgPath string) string {
+func generateBody(templateEmailFileName, recipientName, ts string, alertId int) string {
 	var data struct {
 		RecipientName template.HTML
 		EventTime     template.HTML
 		AlertId       string
-		PathToImage   string
 	}
 	data.RecipientName = template.HTML(recipientName)
 	data.EventTime = template.HTML(ts)
 	data.AlertId = strconv.Itoa(alertId)
-	data.PathToImage = imgPath
 
 	t, err := template.ParseFiles(templateEmailFileName)
 	if err != nil {

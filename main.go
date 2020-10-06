@@ -8,13 +8,13 @@ import (
 )
 
 const (
-	topic      = "to-notify-topic"             // To consume from
-	adminEmail = "dluumi0ke@relay.firefox.com" // Email address to which send the email - could be loaded from config or a DB
-	adminName  = "Camille"                     // Name of the admin
-	imgPath    = "./assets/img.jpeg"           // image responsible from the alert
+	topic      = "to-notify-topic"            // To consume from
+	adminEmail = "francois.paupier@orange.fr" // Email address to which send the email - could be loaded from config or a DB
+	adminName  = "Camille"                    // Name of the admin
 )
 
 func main() {
+	log.Println("~~~ Notification service started ~~~")
 	// Consume queue of alerts
 	consumer := getConsumer(topic)
 	defer consumer.Close()
@@ -26,10 +26,9 @@ func main() {
 			alertId := getAlertId(e.Value)
 			// Retrieve the record
 			ts := getAlertEventTime(alertId)
-			fetchImage(alertId, imgPath)
 			// Prepare email for admin
 			// Send email to admin
-			sendEmail(adminEmail, adminName, ts, alertId, imgPath)
+			sendEmail(adminEmail, adminName, ts, alertId)
 			// Update status of alert to sent
 			checkAlert(alertId)
 		case kafka.PartitionEOF:
