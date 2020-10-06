@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	topic      = "to-notify-topic"            // To consume from
-	adminEmail = "francois.paupier@orange.fr" // Email address to which send the email - could be loaded from config or a DB
-	adminName  = "Camille"                    // Name of the admin
+	topic      = "to-notify-topic"             // To consume from
+	adminEmail = "dluumi0ke@relay.firefox.com" // Email address to which send the email - could be loaded from config or a DB
+	adminName  = "Camille"                     // Name of the admin
 )
 
 func main() {
