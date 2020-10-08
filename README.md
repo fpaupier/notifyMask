@@ -5,6 +5,15 @@
 Subscribe to a Kafka topic of notifications to be sent (_alert for someone not wearing their mask_), fetch the alert from a Cloud SQL instance,
 send an email to a system administrator and record that the alert has been sent in the database.
 
+## Setup your email provider
+
+Sending email programmatically is hard.
+ 
+If you don't want to land in the spam folder of your recipient, I advise you use an email service provider.
+Services like [mailgun](https://www.mailgun.com/) or [mailjet](https://www.mailjet.com/) can help with that.
+
+For this project, I used [mailjet](https://www.mailjet.com/) and its email API, free tier. (the free offer limit is 6,000 emails per month and 200 emails per day which is more than enough for this project)
+
 # Running on local 
 
 1. Install locally
